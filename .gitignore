@@ -4,11 +4,12 @@
 # Log file
 *.log
 
-# BlueJ files
-*.ctxt
+# Local config files
+.project
+.settings/*
+.classpath
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+pom.xml
 
 # Package Files #
 *.jar
@@ -19,5 +20,6 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# virtual machine crash logs
 hs_err_pid*
+/target/
