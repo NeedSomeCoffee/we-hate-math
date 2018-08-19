@@ -1,30 +1,75 @@
 package edu.math.app;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Application {
 	public static void main(String[] args) {
-		int one = 99459;
-		int two = 45645;
+		int one = 1231223;
+		int two = 1221;
 		
 		System.out.println(outputEquation(one, two));
 	}
 	
-	public static String outputEquation(int one, int two) {
+	public static String outputEquation(int multiplierOne, int multiplierTwo) {
 		StringBuilder builder = new StringBuilder();
 		
-		String result = String.valueOf(one * two);
+		String result = String.valueOf(multiplierOne * multiplierTwo);
 		int fullLength = result.length();
 		
-		String firstLine = formatSpaces(String.valueOf(one), fullLength);
-		String secondLine = formatSpaces(String.valueOf(two), fullLength);
-		String thirdLine = formatUnderline(fullLength);
 		
-		builder.append(firstLine)
-				.append("\n")
-				.append(secondLine)
-				.append("\n")
-				.append(thirdLine)
-				.append("\n")
+		// Format first two multipliers and 
+		String firstLine = String.valueOf(multiplierOne);		
+		String secondLine = String.valueOf(multiplierTwo);
+		String underline = formatUnderline(firstLine.length() > secondLine.length() ? firstLine.length() : secondLine.length());
+		
+		String formattedFirstLine = formatSpaces(firstLine, fullLength);
+		String formattedSecondLine = formatSpaces(secondLine, fullLength);
+		String formattedUnderline = formatSpaces(underline, fullLength);
+		
+		builder.append(formattedFirstLine).append("\n")
+				.append(formattedSecondLine).append("\n")
+				.append(formattedUnderline).append("\n");
+		
+		// Perform formatting of intermediate calculations
+
+		List<String> splittedMultiplier = Arrays.asList(secondLine.split(""));		
+		splittedMultiplier = splittedMultiplier.stream().filter(E -> !" ".equals(E)).collect(Collectors.toList());		
+		Collections.reverse(splittedMultiplier);
+		
+		int position = 0;
+		
+		for(String singleNumber : splittedMultiplier) {
+			String rawResult = String.valueOf(multiplierOne * Integer.valueOf(singleNumber));
+			
+			builder.append(formatIntermediateResult(rawResult, position, fullLength)).append("\n");
+			
+			position++;
+		}
+		
+		
+		// Format and append last underline and result
+		builder.append(formatUnderline(fullLength)).append("\n")
 				.append(result);
+		
+		return builder.toString();
+	}
+	
+	public static String formatIntermediateResult(String raw, int position, int fullLength) {
+		StringBuilder builder = new StringBuilder();
+		int difference = fullLength - (raw.length() + position);
+
+		for(int i = 0; i < difference; i++) {
+			builder.append(" ");
+		}
+		
+		builder.append(raw);
+		
+		for(int i = 0; i < position; i++) {
+			builder.append(" ");
+		}
 		
 		return builder.toString();
 	}
